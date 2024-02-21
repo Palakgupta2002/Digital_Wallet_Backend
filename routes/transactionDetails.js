@@ -31,9 +31,9 @@ router.post("/users/:email/transactions", async (req, res) => {
             if (user.Money < amount) {
                 return res.status(400).json({ error: 'Insufficient funds' });
             }
-            user.Money -= amount; 
+            user.Money -= Number(amount); 
         } else {
-            user.Money += amount; 
+            user.Money += Number(amount); 
         }
 
 
