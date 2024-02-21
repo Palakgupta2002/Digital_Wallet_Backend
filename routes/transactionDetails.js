@@ -4,7 +4,7 @@ import Transaction from "../Schemas/transactionDetailsSchema.js";
 
 const router = express.Router();
 
-// Route to add a transaction
+
 router.post("/users/:email/transactions", async (req, res) => {
     const email = req.params.email;
     const { transactionType, amount, description, category, otherCategory, date } = req.body;
@@ -39,7 +39,7 @@ router.post("/users/:email/transactions", async (req, res) => {
 
         user.transactions.push(newTransaction);
 
-        // Save the user with the new transaction added and money updated
+        
         await user.save();
 
         res.json({ message: 'Transaction added successfully', transaction: newTransaction });
@@ -48,3 +48,5 @@ router.post("/users/:email/transactions", async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+export default router;
