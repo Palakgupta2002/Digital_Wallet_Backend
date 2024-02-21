@@ -4,9 +4,10 @@ import Transaction from "../Schemas/transactionDetailsSchema.js";
 
 const router = express.Router();
 
+// Route to add a transaction
 router.post("/users/:email/transactions", async (req, res) => {
     const email = req.params.email;
-    const { transactionType, amount, description, category, otherCategory, date } = req.body; // Include otherCategory in destructuring
+    const { transactionType, amount, description, category, otherCategory, date } = req.body;
 
     try {
         const user = await User.findOne({ email });
@@ -21,14 +22,24 @@ router.post("/users/:email/transactions", async (req, res) => {
             amount,
             description,
             category,
-            otherCategory, // Include otherCategory in the transaction
+            otherCategory,
             date
         });
 
-        // Add the new transaction to the user's transactions array
+        
+        if (transactionType === 'expense') {
+            if (user.Money < amount) {
+                return res.status(400).json({ error: 'Insufficient funds' });
+            }
+            user.Money -= amount; 
+        } else {
+            user.Money += amount; 
+        }
+
+
         user.transactions.push(newTransaction);
 
-        // Save the user with the new transaction added
+        // Save the user with the new transaction added and money updated
         await user.save();
 
         res.json({ message: 'Transaction added successfully', transaction: newTransaction });
@@ -37,5 +48,3 @@ router.post("/users/:email/transactions", async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
-export default router;
