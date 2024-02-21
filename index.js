@@ -6,7 +6,7 @@ import signUp from "./routes/signUp.js"
 import signIn from "./routes/signIn.js"
 import updateMoney from "./routes/UpdateMoney.js"
 import addTransaction from "./routes/transactionDetails.js"
-import getUser from "./routes/get.js"
+import getUser from "./routes/getUser.js"
 import cors from "cors"
 dotenv.config()
 const app=express();
